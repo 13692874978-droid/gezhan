@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人站点</title>
+  <meta name="description" content="一个读书人/思考者的个人站：哲学、文学、理论、批评。" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <!-- ===== Persistent menu button ===== -->
+  <header class="topbar">
+    <a href="#hero" class="brand" data-link>读书人</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="fullMenu">
+      <span class="menu-toggle__label">Menu</span>
+      <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </header>
+
+  <!-- ===== Fullscreen menu ===== -->
+  <nav class="fullmenu" id="fullMenu" aria-hidden="true">
+    <ul class="fullmenu__list">
+      <li><a href="#about"   data-link><span class="fullmenu__idx">关于</span> <span class="fullmenu__en">About</span></a></li>
+      <li><a href="#works"   data-link><span class="fullmenu__idx">项目</span> <span class="fullmenu__en">Works</span></a></li>
+      <li><a href="#writing" data-link><span class="fullmenu__idx">文字</span> <span class="fullmenu__en">Writing</span></a></li>
+      <li><a href="#sharing" data-link><span class="fullmenu__idx">影像</span> <span class="fullmenu__en">Sharing</span></a></li>
+      <li><a href="#contact" data-link><span class="fullmenu__idx">联络</span> <span class="fullmenu__en">Contact</span></a></li>
+    </ul>
+    <div class="fullmenu__foot">
+      <span id="menuEmail"></span>
+    </div>
+  </nav>
+
+  <main id="smooth-content">
+
+    <!-- ===== 5.1 HERO — text sphere + section rail ===== -->
+    <section id="hero" class="hero">
+      <canvas id="sphere-canvas" class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__overlay">
+        <p class="eyebrow">Philosophy · Artificial Intelligence · Literature · Theory</p>
+        <h1 class="hero__name" id="heroName">黄旨祈</h1>
+        <p class="hero__tagline" id="heroTagline">零零后 · 汉语言文学 · 侧重思考与分享</p>
+        <a href="#about" class="hero__enter" data-link>进入 <span aria-hidden="true">↓</span></a>
+      </div>
+      <nav class="hero__rail" aria-label="首页内容导航">
+        <div class="hero__rail-track">
+          <a href="#about" data-link>关于 · About</a>
+          <a href="#works" data-link>做完的东西 · Works</a>
+          <a href="#writing" data-link>写过的文章 · Writing</a>
+          <a href="#sharing" data-link>发过的视频 · Sharing</a>
+          <a href="#contact" data-link>联络 · Contact</a>
+          <a href="#about" data-link aria-hidden="true">关于 · About</a>
+          <a href="#works" data-link aria-hidden="true">做完的东西 · Works</a>
+          <a href="#writing" data-link aria-hidden="true">写过的文章 · Writing</a>
+          <a href="#sharing" data-link aria-hidden="true">发过的视频 · Sharing</a>
+          <a href="#contact" data-link aria-hidden="true">联络 · Contact</a>
+        </div>
+      </nav>
+    </section>
+
+    <!-- ===== 5.2 ABOUT — animated paragraph ===== -->
+    <section id="about" class="section about">
+      <div class="about__ghost" aria-hidden="true">ABOUT</div>
+      <div class="about__inner">
+        <p class="eyebrow reveal">关于 · About</p>
+        <p class="about__id reveal" id="aboutId"></p>
+        <p class="about__text" id="aboutText"></p>
+      </div>
+    </section>
+
+    <!-- ===== 5.3 WORKS ===== -->
+    <section id="works" class="section works">
+      <div class="section__head reveal">
+        <p class="eyebrow">项目 · Works</p>
+        <h2 class="section__title">做完的东西</h2>
+      </div>
+      <div class="card-grid" id="worksGrid"></div>
+    </section>
+
+    <!-- ===== 5.4 WRITING — 3-row horizontal marquee ===== -->
+    <section id="writing" class="section writing">
+      <div class="section__head reveal">
+        <p class="eyebrow">文字 · Writing</p>
+        <h2 class="section__title">写过的文章</h2>
+      </div>
+    </section>
+    <div class="marquee" id="writingMarquee" aria-label="知乎文章列表"></div>
+
+    <!-- ===== 5.5 SHARING — video grid ===== -->
+    <section id="sharing" class="section sharing">
+      <div class="section__head reveal">
+        <p class="eyebrow">影像 · Sharing</p>
+        <h2 class="section__title">发过的视频</h2>
+      </div>
+      <div class="video-grid" id="sharingTrack" aria-label="哔哩哔哩视频列表"></div>
+    </section>
+
+    <!-- ===== 5.6 CONTACT ===== -->
+    <footer id="contact" class="section contact">
+      <div class="section__head reveal">
+        <p class="eyebrow">联络 · Contact</p>
+        <h2 class="section__title">欢迎联系</h2>
+      </div>
+      <ul class="contact__links reveal" id="contactLinks"></ul>
+      <p class="contact__hint reveal" id="contactHint"></p>
+      <p class="contact__copy reveal" id="contactCopy"></p>
+    </footer>
+
+  </main>
+
+  <!-- ===== Libraries (CDN) ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <!-- ===== Site code ===== -->
+  <script src="./data/content.js"></script>
+  <script src="./js/render.js"></script>
+  <script src="./js/sphere.js"></script>
+  <script src="./js/menu.js"></script>
+  <script src="./js/scroll.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
