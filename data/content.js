@@ -22,7 +22,7 @@ window.SITE = {
       title: "语文学习站",
       desc: "针对初中语文阅读难点的解决防范。",
       tags: ["静态站", "学习工具"],
-      cover: "./assets/images/proj-chinese.jpg",
+      cover: "./assets/images/course-reading.jpg",
       repo: "https://github.com/13692874978-droid/reading",
       demo: "https://13692874978-droid.github.io/reading/"
     },
@@ -30,7 +30,7 @@ window.SITE = {
       title: "历史学习站",
       desc: "用历史唯物主义重构历史。",
       tags: ["静态站", "学习工具"],
-      cover: "./assets/images/proj-history.jpg",
+      cover: "./assets/images/course-history.jpg",
       repo: "https://github.com/13692874978-droid/history",
       demo: "https://13692874978-droid.github.io/history/"
     }

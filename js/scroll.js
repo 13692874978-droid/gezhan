@@ -26,6 +26,7 @@ window.initScroll = function initScroll() {
     if (reduceMotion) {
       document.querySelectorAll(".reveal").forEach(function (n) { n.classList.add("is-in"); });
       document.querySelectorAll(".about__text .clause__i").forEach(function (n) { n.style.opacity = 1; n.style.transform = "none"; });
+      document.querySelectorAll(".about__moon").forEach(function (n) { n.style.opacity = 1; n.style.transform = "none"; });
       return;
     }
 
@@ -53,18 +54,33 @@ window.initScroll = function initScroll() {
     var clauses = document.querySelectorAll(".about__text .clause__i");
     var aboutHead = document.querySelectorAll("#about .eyebrow, #about .about__id");
     var aboutGhost = document.querySelector("#about .about__ghost");
+    var aboutMoon = document.querySelector("#about .about__moon");
     if (clauses.length || aboutHead.length) {
-      gsap.set(aboutHead, { opacity: 0, y: 24, filter: "blur(8px)" });
-      gsap.set(clauses, { opacity: 0, y: 26, filter: "blur(10px)" });
-      if (aboutGhost) gsap.set(aboutGhost, { opacity: 0, x: 80 });
+      var aboutTl = null;
+      function resetAbout() {
+        if (aboutTl) aboutTl.kill();
+        gsap.set(aboutHead, { opacity: 0, y: 24, filter: "blur(8px)" });
+        gsap.set(clauses, { opacity: 0, y: 26, filter: "blur(10px)" });
+        if (aboutGhost) gsap.set(aboutGhost, { opacity: 0, x: 80, zIndex: 0 });
+        if (aboutMoon) gsap.set(aboutMoon, { opacity: 0, y: 44, scale: 1.04, zIndex: 1 });
+      }
+      function playAbout() {
+        resetAbout();
+        aboutTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        if (aboutMoon) aboutTl.to(aboutMoon, { opacity: 1, y: 0, scale: 1, duration: 0.55 }, 0);
+        if (aboutGhost) aboutTl.to(aboutGhost, { opacity: 1, x: 0, duration: 1.2 }, 0.55);
+        aboutTl.to(aboutHead, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.75, stagger: 0.1 }, 0.08)
+          .to(clauses, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, stagger: 0.16 }, 0.36);
+      }
+      resetAbout();
       ScrollTrigger.create({
-        trigger: "#about", start: "top 68%", once: true,
-        onEnter: function () {
-          var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-          if (aboutGhost) tl.to(aboutGhost, { opacity: 1, x: 0, duration: 1.2 }, 0);
-          tl.to(aboutHead, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.75, stagger: 0.1 }, 0.08)
-            .to(clauses, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, stagger: 0.16 }, 0.36);
-        }
+        trigger: "#about",
+        start: "top 68%",
+        end: "bottom 20%",
+        onEnter: playAbout,
+        onEnterBack: playAbout,
+        onLeave: resetAbout,
+        onLeaveBack: resetAbout
       });
     }
 
@@ -103,6 +119,7 @@ window.initScroll = function initScroll() {
     ScrollTrigger.refresh();
     // iframe 等异步内容加载后刷新位置
     window.addEventListener("load", function () { ScrollTrigger.refresh(); });
+    window.addEventListener("pageshow", function () { ScrollTrigger.refresh(); });
   } else {
     document.querySelectorAll(".reveal").forEach(function (n) { n.classList.add("is-in"); });
     document.querySelectorAll(".about__text .clause__i").forEach(function (n) { n.style.opacity = 1; });
@@ -142,9 +159,15 @@ function setupWritingMarquee(reduceMotion) {
   var boost = 0;
   var lastScrollY = window.scrollY || 0;
   var lastTime = performance.now();
+  var dragArmed = false;
+  var dragging = false;
+  var dragMoved = false;
+  var dragStartX = 0;
+  var dragLastX = 0;
+  var dragVel = 0;
 
   function addBoost(amount) {
-    boost = Math.min(900, boost + Math.abs(amount) * 2.6);
+    boost = Math.min(260, boost + Math.abs(amount) * 0.55);
   }
 
   window.addEventListener("wheel", function (e) {
@@ -156,6 +179,7 @@ function setupWritingMarquee(reduceMotion) {
     lastTouchY = e.touches && e.touches.length ? e.touches[0].clientY : null;
   }, { passive: true });
   window.addEventListener("touchmove", function (e) {
+    if (dragging) return;
     if (!e.touches || !e.touches.length || lastTouchY == null) return;
     var y = e.touches[0].clientY;
     addBoost(y - lastTouchY);
@@ -164,9 +188,87 @@ function setupWritingMarquee(reduceMotion) {
 
   if (window.lenisInstance && window.lenisInstance.on) {
     window.lenisInstance.on("scroll", function (e) {
-      if (e && typeof e.velocity === "number") addBoost(e.velocity * 18);
+      if (e && typeof e.velocity === "number") addBoost(e.velocity * 4);
     });
   }
+
+  function applyDrag(delta) {
+    rows.forEach(function (row) {
+      row.x += -delta * row.dir;
+      row.x = ((row.x % row.width) + row.width) % row.width;
+    });
+  }
+
+  marquee.addEventListener("mousedown", function (e) {
+    dragArmed = true;
+    dragging = false;
+    dragMoved = false;
+    dragStartX = dragLastX = e.clientX;
+    dragVel = 0;
+  });
+
+  window.addEventListener("mousemove", function (e) {
+    if (!dragArmed) return;
+    var dx = e.clientX - dragLastX;
+    dragLastX = e.clientX;
+    if (!dragging && Math.abs(e.clientX - dragStartX) > 5) {
+      dragging = true;
+      dragMoved = true;
+      marquee.classList.add("is-dragging");
+    }
+    if (!dragging) return;
+    dragVel = dx;
+    applyDrag(dx);
+    if (e.cancelable) e.preventDefault();
+  });
+
+  window.addEventListener("mouseup", function () {
+    if (!dragArmed && !dragging) return;
+    dragArmed = false;
+    if (!dragging) return;
+    dragging = false;
+    marquee.classList.remove("is-dragging");
+    boost = Math.min(900, boost + Math.abs(dragVel) * 32);
+  });
+
+  marquee.addEventListener("touchstart", function (e) {
+    if (!e.touches || !e.touches.length) return;
+    dragArmed = true;
+    dragging = false;
+    dragMoved = false;
+    dragStartX = dragLastX = e.touches[0].clientX;
+    dragVel = 0;
+  }, { passive: true });
+
+  window.addEventListener("touchmove", function (e) {
+    if (!dragArmed || !e.touches || !e.touches.length) return;
+    var dx = e.touches[0].clientX - dragLastX;
+    dragLastX = e.touches[0].clientX;
+    if (!dragging && Math.abs(e.touches[0].clientX - dragStartX) > 5) {
+      dragging = true;
+      dragMoved = true;
+      marquee.classList.add("is-dragging");
+    }
+    if (!dragging) return;
+    dragVel = dx;
+    applyDrag(dx);
+  }, { passive: true });
+
+  window.addEventListener("touchend", function () {
+    if (!dragArmed && !dragging) return;
+    dragArmed = false;
+    if (!dragging) return;
+    dragging = false;
+    marquee.classList.remove("is-dragging");
+    boost = Math.min(900, boost + Math.abs(dragVel) * 32);
+  });
+
+  marquee.addEventListener("click", function (e) {
+    if (!dragMoved) return;
+    e.preventDefault();
+    e.stopPropagation();
+    dragMoved = false;
+  }, true);
 
   function frame(now) {
     var dt = Math.min(0.05, (now - lastTime) / 1000 || 0);
@@ -176,9 +278,14 @@ function setupWritingMarquee(reduceMotion) {
     var dy = Math.abs(currentY - lastScrollY);
     lastScrollY = currentY;
     addBoost(dy);
-    boost *= 0.92;
+    boost *= 0.86;
 
     rows.forEach(function (row) {
+      if (dragging) {
+        var offsetDragging = row.dir < 0 ? -row.x : row.x - row.width;
+        row.track.style.transform = "translate3d(" + offsetDragging + "px,0,0)";
+        return;
+      }
       var speed = row.base + boost;
       row.x += row.dir * speed * dt;
       row.x = ((row.x % row.width) + row.width) % row.width;

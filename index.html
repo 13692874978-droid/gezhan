@@ -16,7 +16,6 @@
 <body>
   <!-- ===== Persistent menu button ===== -->
   <header class="topbar">
-    <a href="#hero" class="brand" data-link>读书人</a>
     <button class="menu-toggle" id="menuToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="fullMenu">
       <span class="menu-toggle__label">Menu</span>
       <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
@@ -39,7 +38,7 @@
 
   <main id="smooth-content">
 
-    <!-- ===== 5.1 HERO — text sphere + section rail ===== -->
+    <!-- ===== 5.1 HERO — rolling word sphere + section rail ===== -->
     <section id="hero" class="hero">
       <canvas id="sphere-canvas" class="hero__canvas" aria-hidden="true"></canvas>
       <div class="hero__overlay">
@@ -66,7 +65,34 @@
 
     <!-- ===== 5.2 ABOUT — animated paragraph ===== -->
     <section id="about" class="section about">
+      <div class="about__moon" aria-hidden="true"></div>
       <div class="about__ghost" aria-hidden="true">ABOUT</div>
+      <div class="book-rails" aria-hidden="true">
+        <div class="book-rail book-rail--up">
+          <div class="book-rail__set">
+            <span>《刘擎西方现代思想讲义》</span><span>《骆驼祥子》</span><span>《悉达多》</span><span>《你的第一本哲学书》</span><span>《晚熟的人》</span><span>《苏格拉底的申辩》</span><span>《围城》</span><span>《美的历程》</span><span>《生死疲劳》</span><span>《局外人》</span><span>《呐喊》</span><span>《乡土中国》</span>
+          </div>
+          <div class="book-rail__set">
+            <span>《刘擎西方现代思想讲义》</span><span>《骆驼祥子》</span><span>《悉达多》</span><span>《你的第一本哲学书》</span><span>《晚熟的人》</span><span>《苏格拉底的申辩》</span><span>《围城》</span><span>《美的历程》</span><span>《生死疲劳》</span><span>《局外人》</span><span>《呐喊》</span><span>《乡土中国》</span>
+          </div>
+        </div>
+        <div class="book-rail book-rail--down">
+          <div class="book-rail__set">
+            <span>《不能承受的生命之轻》</span><span>《变形记》</span><span>《许三观卖血记》</span><span>《牧羊少年奇幻之旅》</span><span>《当我们不再理解世界》</span><span>《在轮下》</span><span>《命运》</span><span>《小说的艺术》</span><span>《斯通纳》</span><span>《献给阿尔吉侬的花束》</span><span>《窄门》</span><span>《技术垄断》</span>
+          </div>
+          <div class="book-rail__set">
+            <span>《不能承受的生命之轻》</span><span>《变形记》</span><span>《许三观卖血记》</span><span>《牧羊少年奇幻之旅》</span><span>《当我们不再理解世界》</span><span>《在轮下》</span><span>《命运》</span><span>《小说的艺术》</span><span>《斯通纳》</span><span>《献给阿尔吉侬的花束》</span><span>《窄门》</span><span>《技术垄断》</span>
+          </div>
+        </div>
+        <div class="book-rail book-rail--up book-rail--slow">
+          <div class="book-rail__set">
+            <span>《红与黑》</span><span>《中国通史》</span><span>《燃烧的原野》</span><span>《太阳照常升起》</span><span>《西线无战事》</span><span>《蝇王》</span><span>《麦田里的守望者》</span><span>《少年维特之烦恼》</span><span>《地下室手记》</span><span>《命运交叉的城堡》</span><span>《西方哲学史讲演录》</span><span>《符号学讲义》</span>
+          </div>
+          <div class="book-rail__set">
+            <span>《红与黑》</span><span>《中国通史》</span><span>《燃烧的原野》</span><span>《太阳照常升起》</span><span>《西线无战事》</span><span>《蝇王》</span><span>《麦田里的守望者》</span><span>《少年维特之烦恼》</span><span>《地下室手记》</span><span>《命运交叉的城堡》</span><span>《西方哲学史讲演录》</span><span>《符号学讲义》</span>
+          </div>
+        </div>
+      </div>
       <div class="about__inner">
         <p class="eyebrow reveal">关于 · About</p>
         <p class="about__id reveal" id="aboutId"></p>
@@ -76,6 +102,7 @@
 
     <!-- ===== 5.3 WORKS ===== -->
     <section id="works" class="section works">
+      <div class="section__ghost" aria-hidden="true">WORKS</div>
       <div class="section__head reveal">
         <p class="eyebrow">项目 · Works</p>
         <h2 class="section__title">做完的东西</h2>
@@ -85,15 +112,17 @@
 
     <!-- ===== 5.4 WRITING — 3-row horizontal marquee ===== -->
     <section id="writing" class="section writing">
+      <div class="section__ghost" aria-hidden="true">WRITING</div>
       <div class="section__head reveal">
         <p class="eyebrow">文字 · Writing</p>
         <h2 class="section__title">写过的文章</h2>
       </div>
+      <div class="marquee" id="writingMarquee" aria-label="知乎文章列表"></div>
     </section>
-    <div class="marquee" id="writingMarquee" aria-label="知乎文章列表"></div>
 
     <!-- ===== 5.5 SHARING — video grid ===== -->
     <section id="sharing" class="section sharing">
+      <div class="section__ghost" aria-hidden="true">VIDEOS</div>
       <div class="section__head reveal">
         <p class="eyebrow">影像 · Sharing</p>
         <h2 class="section__title">发过的视频</h2>
@@ -103,6 +132,7 @@
 
     <!-- ===== 5.6 CONTACT ===== -->
     <footer id="contact" class="section contact">
+      <div class="section__ghost" aria-hidden="true">CONTACT</div>
       <div class="section__head reveal">
         <p class="eyebrow">联络 · Contact</p>
         <h2 class="section__title">欢迎联系</h2>
@@ -127,5 +157,21 @@
   <script src="./js/menu.js"></script>
   <script src="./js/scroll.js"></script>
   <script src="./js/main.js"></script>
+
+  <!-- ===== Chatbot ===== -->
+  <div class="site-chatbot" id="siteChatbot">
+    <button class="site-chatbot__button" id="siteChatbotButton" type="button" aria-label="打开聊天" aria-expanded="false" aria-controls="siteChatbotPanel"></button>
+    <div class="site-chatbot__panel" id="siteChatbotPanel" hidden>
+      <button class="site-chatbot__close" id="siteChatbotClose" type="button" aria-label="关闭聊天">×</button>
+      <iframe
+        class="site-chatbot__frame"
+        data-src="https://udify.app/chat/WjxSIX96Im2a313A"
+        title="站点聊天助手"
+        loading="lazy"
+        allow="clipboard-write">
+      </iframe>
+    </div>
+  </div>
+  <script src="./js/chatbot.js"></script>
 </body>
 </html>
